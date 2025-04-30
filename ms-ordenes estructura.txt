@@ -1,0 +1,49 @@
+ms-ordenes
+├── src
+│   ├── main
+│   │   ├── java/com/codigo/ordenes
+│   │   │   ├── application
+│   │   │   │   ├── port
+│   │   │   │   │    ├── input
+│   │   │   │   │    │    └── OrdenUseCase.java
+│   │   │   │   │    └── output
+│   │   │   │   │         └── OrdenRepositoryPort.java
+│   │   │   │   └── service
+│   │   │   │        └── OrdenService.java
+│   │   │   ├── domain
+│   │   │   │   └── model
+│   │   │   │        └── Orden.java
+│   │   │   │   └── ports.in
+│   │   │   │        └── ProductoService.java
+│   │   │   │        └── ProductoServiceImpl.java
+│   │   │   ├── infrastructure
+│   │   │   │   ├── adapter
+│   │   │   │   │    └── OrdenRepositoryAdapter.java
+│   │   │   │   ├── client
+│   │   │   │   │   └── dto
+│   │   │   │   │    │  	└── ProductoDTO
+│   │   │   │   │    │  	└── UsuarioAuthDTO
+│   │   │   │   │    └── AuthFeignClient.java
+│   │   │   │   │    └── ProductoFeignClient.java
+│   │   │   │   ├── config
+│   │   │   │   │    └── SecurityConfig.java
+│   │   │   │   │    └── JwtFilter.java
+│   │   │   │   ├── controller
+│   │   │   │   │    └── OrdenController.java
+│   │   │   │   ├── entity
+│   │   │   │   │    └── OrdenEntity.java
+│   │   │   │   ├── mapper
+│   │   │   │   │    └── OrdenMapper.java
+│   │   │   │   └── repository
+│   │   │   │   │    └── OrdenRepository.java
+│   │   │   │   │    └── OrdenRepositoryJpa.java
+│   │   │   │   └── repository
+│   │   │   │        └── OrdenAutorizacionService.java
+│   │   │   └── MsOrdenesApplication.java
+│   │   └── resources
+│   │       ├── application.properties
+│   │       └── bootstrap.properties
+│   └── test/java/com/codigo/ordenes
+│       └── (tests unitarios)
+├── Dockerfile
+└── pom.xml
