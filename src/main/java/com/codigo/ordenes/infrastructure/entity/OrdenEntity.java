@@ -30,15 +30,17 @@ public class OrdenEntity {
 
     @Column(name = "metodo_pago", nullable = false)
     private String metodoPago;
+
     @ElementCollection
     @CollectionTable(
             name = "orden_productos",
             joinColumns = @JoinColumn(name = "orden_id")
     )
+
     @Column(name = "producto_id")
     private List<Long> productosIds = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
     @Enumerated(EnumType.STRING)

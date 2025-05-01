@@ -1,4 +1,4 @@
-package com.codigo.ordenes.infrastructure.controller.dto;
+package com.codigo.ordenes.application.dto;
 
 import lombok.Data;
 

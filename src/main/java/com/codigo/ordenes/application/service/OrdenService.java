@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,12 +46,16 @@ public class OrdenService implements OrdenUseCase {
     }
     // Método auxiliar para obtener el token del contexto de seguridad
     private String obtenerTokenContext() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof JwtAuthenticationToken jwtToken) {
-            return jwtToken.getToken().getTokenValue();
+        var attributes = RequestContextHolder.getRequestAttributes();
+        if (attributes instanceof ServletRequestAttributes servletRequestAttributes) {
+            String authHeader = servletRequestAttributes.getRequest().getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                return authHeader.substring(7); // solo el token, sin "Bearer "
+            }
         }
-        throw new IllegalStateException("No se pudo obtener el token JWT");
+        throw new IllegalStateException("No se pudo obtener el token JWT del encabezado");
     }
+
 
     @Override
     public List<Orden> listarOrdenes() {

@@ -1,0 +1,18 @@
+http://localhost:8083/ordenes
+Authorization 
+Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2xlbnRpbm8xMDkyQGhvdG1haWwuY29tIiwiaWF0IjoxNzQ2MDc4MjYwLCJleHAiOjE3NDYwODE4NjB9.bJUnMfQN6zuxNchbSTL_DcGMPJ3AtuJ-r-Lb3FYqAxOOZpFItJpGlWXyppCLb8OU_7i4CMvWpFhGTsoBxEUPhg
+
+{
+  "idCliente": 1,
+  "metodoPago": "TARJETA",
+  "productos": [
+    {
+      "idProducto": 2,
+      "cantidad": 2
+    },
+    {
+      "idProducto": 2,
+      "cantidad": 1
+    }
+  ]
+}

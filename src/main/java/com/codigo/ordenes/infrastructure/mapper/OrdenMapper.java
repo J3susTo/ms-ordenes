@@ -34,12 +34,14 @@ public class OrdenMapper {
         return OrdenEntity.builder()
                 .id(domain.getId())
                 .usuarioId(domain.getUsuarioId())
-                .idCliente(domain.getIdCliente()) // nuevo campo
+                .idCliente(domain.getIdCliente())
                 .productosIds(domain.getProductosIds())
-                .metodoPago(domain.getMetodoPago()) // nuevo campo                .fecha(domain.getFecha())
+                .metodoPago(domain.getMetodoPago())
+                .fecha(domain.getFecha())
                 .estado(mapToEstadoOrdenEntity(domain.getEstado()))
                 .build();
     }
+
 
     public List<Orden> toDomainList(List<OrdenEntity> entities) {
         return entities.stream()
