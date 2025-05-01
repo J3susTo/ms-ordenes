@@ -5,8 +5,10 @@ import com.codigo.ordenes.application.port.output.OrdenRepositoryPort;
 import com.codigo.ordenes.domain.model.Orden;
 import com.codigo.ordenes.infrastructure.client.ProductoFeignClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,11 +25,12 @@ public class OrdenService implements OrdenUseCase {
     @Override
     @Transactional
     public Orden crearOrden(Orden orden) {
-        // Verificar que todos los productos existan
-        String token = "Bearer " + obtenerTokenContext(); // Esta función debería implementarse para obtener el token del contexto de seguridad
+        // Obtener el token del contexto de seguridad
+        String token = "Bearer " + obtenerTokenContext();  // Llamada al método para obtener el token
+
 
         boolean todosProductosExisten = orden.getProductosIds().stream()
-                .allMatch(productoId -> productoFeignClient.verificarProducto(productoId, token));
+                .allMatch(productoId -> productoFeignClient.verificarProducto(productoId, token) != null);
 
         if (!todosProductosExisten) {
             throw new IllegalArgumentException("Uno o más productos no existen");
@@ -38,6 +41,14 @@ public class OrdenService implements OrdenUseCase {
         orden.setEstado(Orden.EstadoOrden.PENDIENTE);
 
         return ordenRepositoryPort.save(orden);
+    }
+    // Método auxiliar para obtener el token del contexto de seguridad
+    private String obtenerTokenContext() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof JwtAuthenticationToken jwtToken) {
+            return jwtToken.getToken().getTokenValue();
+        }
+        throw new IllegalStateException("No se pudo obtener el token JWT");
     }
 
     @Override
@@ -54,12 +65,5 @@ public class OrdenService implements OrdenUseCase {
     @Override
     public List<Orden> buscarOrdenesPorUsuario(Long usuarioId) {
         return ordenRepositoryPort.findByUsuarioId(usuarioId);
-    }
-
-    // Método auxiliar para obtener el token del contexto de seguridad
-    private String obtenerTokenContext() {
-        // Implementación para obtener el token del contexto de seguridad
-        // Esto dependerá de cómo estés manejando el token en tu aplicación
-        return "token-placeholder";
     }
 }

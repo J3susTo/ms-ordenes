@@ -3,6 +3,8 @@ package com.codigo.ordenes.infrastructure.controller;
 import com.codigo.ordenes.application.port.input.OrdenUseCase;
 import com.codigo.ordenes.domain.model.Orden;
 import com.codigo.ordenes.infrastructure.client.dto.UsuarioAuthDTO;
+import com.codigo.ordenes.infrastructure.controller.dto.CrearOrdenRequest;
+import com.codigo.ordenes.infrastructure.controller.dto.ProductoCantidadDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,17 +25,24 @@ public class OrdenController {
 
     @PostMapping
     @PreAuthorize("hasRole('USUARIO') or hasRole('ADMIN') or hasRole('SUPERADMIN')")
-    public ResponseEntity<Orden> crearOrden(@RequestBody Orden orden, HttpServletRequest request) {
-        // Obtener ID del usuario del token (agregado por el JwtFilter)
-        Long usuarioId = (Long) request.getAttribute("usuarioId");
+    public ResponseEntity<Orden> crearOrden(@RequestBody CrearOrdenRequest request, HttpServletRequest httpRequest) {
+        Long usuarioId = (Long) httpRequest.getAttribute("usuarioId");
 
-        // Establecer el usuarioId en la orden
-        orden.setUsuarioId(usuarioId);
+        Orden orden = Orden.builder()
+                .usuarioId(usuarioId)
+                .idCliente(request.getIdCliente())
+                .productosIds(
+                        request.getProductos().stream()
+                                .map(ProductoCantidadDTO::getIdProducto)
+                                .toList()
+                )
+                .metodoPago(request.getMetodoPago())
+                .build();
 
-        // Crear la orden
         Orden nuevaOrden = ordenUseCase.crearOrden(orden);
         return new ResponseEntity<>(nuevaOrden, HttpStatus.CREATED);
     }
+
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")

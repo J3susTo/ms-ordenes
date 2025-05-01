@@ -18,7 +18,9 @@ public class OrdenMapper {
         return Orden.builder()
                 .id(entity.getId())
                 .usuarioId(entity.getUsuarioId())
+                .idCliente(entity.getIdCliente()) // nuevo campo
                 .productosIds(entity.getProductosIds())
+                .metodoPago(entity.getMetodoPago()) // nuevo campo
                 .fecha(entity.getFecha())
                 .estado(mapToEstadoOrdenDomain(entity.getEstado()))
                 .build();
@@ -32,8 +34,9 @@ public class OrdenMapper {
         return OrdenEntity.builder()
                 .id(domain.getId())
                 .usuarioId(domain.getUsuarioId())
+                .idCliente(domain.getIdCliente()) // nuevo campo
                 .productosIds(domain.getProductosIds())
-                .fecha(domain.getFecha())
+                .metodoPago(domain.getMetodoPago()) // nuevo campo                .fecha(domain.getFecha())
                 .estado(mapToEstadoOrdenEntity(domain.getEstado()))
                 .build();
     }

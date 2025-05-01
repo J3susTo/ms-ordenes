@@ -25,6 +25,11 @@ public class OrdenEntity {
     @Column(name = "usuario_id", nullable = false)
     private Long usuarioId;
 
+    @Column(name = "cliente_id", nullable = false)
+    private Long idCliente;
+
+    @Column(name = "metodo_pago", nullable = false)
+    private String metodoPago;
     @ElementCollection
     @CollectionTable(
             name = "orden_productos",

@@ -15,9 +15,11 @@ import java.util.List;
 public class Orden {
     private Long id;
     private Long usuarioId;
+    private Long idCliente;
     private List<Long> productosIds;
     private LocalDateTime fecha;
     private EstadoOrden estado;
+    private String metodoPago;
 
     public enum EstadoOrden {
         PENDIENTE, COMPLETADA, CANCELADA
