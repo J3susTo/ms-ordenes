@@ -9,4 +9,6 @@ public interface OrdenUseCase {
     List<Orden> listarOrdenes();
     Orden buscarOrdenPorId(Long id);
     List<Orden> buscarOrdenesPorUsuario(Long usuarioId);
+    Orden actualizarOrden(Long id, Orden orden);
+    void eliminarOrden(Long id);
 }

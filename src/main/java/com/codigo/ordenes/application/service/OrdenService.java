@@ -72,4 +72,32 @@ public class OrdenService implements OrdenUseCase {
     public List<Orden> buscarOrdenesPorUsuario(Long usuarioId) {
         return ordenRepositoryPort.findByUsuarioId(usuarioId);
     }
+
+    @Override
+    @Transactional
+    public Orden actualizarOrden(Long id, Orden orden) {
+        // Verificar si la orden existe
+        Orden ordenExistente = ordenRepositoryPort.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Orden no encontrada con ID: " + id));
+
+        // Actualizar los campos de la orden
+        ordenExistente.setProductosIds(orden.getProductosIds());
+        ordenExistente.setMetodoPago(orden.getMetodoPago());
+        ordenExistente.setEstado(orden.getEstado());
+
+        // Se podría agregar lógica para verificar si los productos siguen existiendo o no, similar al método de creación
+
+        return ordenRepositoryPort.save(ordenExistente);
+    }
+    @Override
+    @Transactional
+    public void eliminarOrden(Long id) {
+        // Verificando si la orden existe
+        Orden ordenExistente = ordenRepositoryPort.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Orden no encontrada con ID: " + id));
+
+        // Eliminar la orden
+        ordenRepositoryPort.deleteById(id);
+    }
+
 }

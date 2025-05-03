@@ -95,4 +95,26 @@ class OrdenServiceTest {
             verify(ordenRepositoryPort, never()).save(any(Orden.class));
         }
     }
+
+    @Test
+    void crearOrden_DeberiaLanzarExcepcionSiListaProductosEstaVacia() {
+        Orden orden = Orden.builder()
+                .usuarioId(101L)
+                .idCliente(201L)
+                .productosIds(List.of()) // lista vacía
+                .metodoPago("efectivo")
+                .build();
+
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getHeader("Authorization")).thenReturn("Bearer otro-token");
+        ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+
+        try (MockedStatic<RequestContextHolder> mockedStatic = Mockito.mockStatic(RequestContextHolder.class)) {
+            mockedStatic.when(RequestContextHolder::getRequestAttributes).thenReturn(attributes);
+
+            assertThrows(IllegalArgumentException.class, () -> ordenService.crearOrden(orden));
+            verify(ordenRepositoryPort, never()).save(any(Orden.class));
+        }
+    }
+
 }
